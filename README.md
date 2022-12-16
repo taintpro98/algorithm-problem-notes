@@ -1,2 +1,2 @@
-# codeforce-problem-notes
+# Algorithm
 g++ -std=c++11
