@@ -12,5 +12,5 @@ def solve(parent, child):
     return False
 
 
-a = solve("abdcefgh", "aeh") # True
+a = solve("abdcefgh", "aeh")  # True
 print(a)

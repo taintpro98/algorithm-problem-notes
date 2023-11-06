@@ -41,4 +41,4 @@ g.addEdge(6, 7)
 g.addEdge(7, 8)
 g.addEdge(7, 9)
 res = g.getShortestPath(0, 9)
-print(res) # 4
+print(res)  # 4

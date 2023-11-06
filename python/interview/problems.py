@@ -61,6 +61,8 @@ def get_big_numbers_sum(a, b):
     return res
 
 # tim ky tu khong trung lap dau tien
+
+
 def find_first_non_duplicate(input_string):
     count_dict = {}
     for c in input_string:
