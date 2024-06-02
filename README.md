@@ -1,5 +1,5 @@
 # Algorithm
-g++ -std=c++11
-g++ test.cpp && ./a.out
+
+g++ -std=c++17 practice/cpp/template.cpp && ./a.out
 
 # Python

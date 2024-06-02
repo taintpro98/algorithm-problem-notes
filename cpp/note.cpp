@@ -18,18 +18,15 @@ int countOnesInBinary(int n)
   return count;
 }
 
-#include <iostream>
-#include <vector>
-#include <algorithm>
+int main()
+{
+  std::vector<std::pair<int, int>> pairs = {{3, 7}, {1, 5}, {4, 2}, {2, 6}};
 
-int main() {
-    std::vector<std::pair<int, int>> pairs = {{3, 7}, {1, 5}, {4, 2}, {2, 6}};
+  sort(pairs.begin(), pairs.end());
 
-    sort(pairs.begin(), pairs.end());
-
-    for (const auto& pair : pairs) {
-        std::cout << "(" << pair.first << ", " << pair.second << ") ";
-    }
-    return 0;
+  for (const auto &pair : pairs)
+  {
+    std::cout << "(" << pair.first << ", " << pair.second << ") ";
+  }
+  return 0;
 }
-
