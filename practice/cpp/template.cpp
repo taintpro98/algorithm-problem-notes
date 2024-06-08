@@ -1,33 +1,60 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-namespace fs = filesystem;
 
 class Solution
 {
 public:
-  string removeStars(string s)
+  string decodeString(string s)
   {
     stack<char> st;
-    for (char c : s)
+
+    for (auto c : s)
     {
-      if (c != '*')
+      if (c != ']')
       {
         st.push(c);
       }
       else
       {
-        if (!st.empty())
+        string tmp;
+        string tmpres;
+        while (!st.empty() && isalpha(st.top()))
+        {
+          char ch = st.top();
           st.pop();
+          tmp = ch + tmp;
+        }
+        if (!st.empty() && st.top() == '[')
+          st.pop();
+
+        string numchar;
+        while (!st.empty() && isdigit(st.top()))
+        {
+          char ch = st.top();
+          st.pop();
+          numchar = ch + numchar;
+        }
+        int num = stoi(numchar);
+
+        for (int i = 0; i < num; i++)
+        {
+          tmpres += tmp;
+        }
+
+        for (auto t : tmpres)
+        {
+          st.push(t);
+        }
       }
     }
-    string result = "";
+    string result;
     while (!st.empty())
     {
-      result += st.top();
+      char top = st.top();
       st.pop();
+      result = top + result;
     }
-    reverse(result.begin(), result.end());
     return result;
   }
 };
@@ -35,7 +62,7 @@ public:
 int main()
 {
   // input
-  freopen("handon/in.txt", "r", stdin);
+  freopen("practice/in.txt", "r", stdin);
   ios_base::sync_with_stdio(0);
   cin.tie(0);
   string s;
@@ -44,11 +71,11 @@ int main()
   Solution solution;
 
   // run
-  int T = 2;
+  int T = 3;
   while (T--)
   {
     cin >> s;
-    string res = solution.removeStars(s);
+    string res = solution.decodeString(s);
     cout << res << endl;
   }
   return 0;
