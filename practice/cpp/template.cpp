@@ -65,7 +65,7 @@ int main()
   freopen("practice/in.txt", "r", stdin);
   ios_base::sync_with_stdio(0);
   cin.tie(0);
-  string s;
+  // cout.tie(0);
 
   // solution
   Solution solution;
@@ -74,6 +74,7 @@ int main()
   int T = 3;
   while (T--)
   {
+    string s;
     cin >> s;
     string res = solution.decodeString(s);
     cout << res << endl;
