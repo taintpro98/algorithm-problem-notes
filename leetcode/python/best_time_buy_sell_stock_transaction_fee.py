@@ -28,6 +28,15 @@ Output: 6
 from typing import List
 
 class Solution:
+    def __init__(self, n: int):
+        self.dp = [-1] * n ## max profit when sell at i
+    def handle(self, prices: List[int], fee: int, x: int) -> int:
+        if x == 0:
+            return dp[0] = 0
+        if dp[x] != -1:
+            return dp[x]
+        
+        return
     def maxProfit(self, prices: List[int], fee: int) -> int:
         return 0
     
