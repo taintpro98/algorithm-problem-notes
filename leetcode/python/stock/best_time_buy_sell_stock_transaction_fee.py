@@ -29,27 +29,15 @@ from typing import List
 
 
 class Solution:
-    def handle(self, prices: List[int], fee: int, x: int) -> int:
-        if x == 0:
-            self.dp[0] = 0
-            return 0
-        if self.dp[x] != -1:
-            return self.dp[x]
-
-        max_profit = 0
-        for i in range(x):
-            if prices[i] < prices[x]:
-                max_profit = max(max_profit, prices[x] - prices[i] - fee + self.handle(prices, fee, i-1))
-        self.dp[x] = max_profit
-        return max_profit
-
     def maxProfit(self, prices: List[int], fee: int) -> int:
-        n = len(prices)
-        self.dp = [-1] * n
-        max_profit = 0
-        for i in range(n):
-            max_profit = max(max_profit, self.handle(prices, fee, i))
-        return max_profit
+        if len(prices) == 0:
+            return 0
+        hold = -prices[0]  # max profit when holding stock at ith day
+        cash = 0  # max profit when selling stock at ith day
+        for i in range(1, len(prices)):
+            hold = max(hold, cash - prices[i])
+            cash = max(cash, hold + prices[i] - fee)
+        return cash
 
 
 sol = Solution()

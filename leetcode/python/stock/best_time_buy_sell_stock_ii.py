@@ -24,7 +24,7 @@ Example 3:
 Input: prices = [7,6,4,3,1]
 Output: 0
 Explanation: There is no way to make a positive profit, so we never buy the stock to achieve the maximum profit of 0.
- 
+
 
 Constraints:
 
@@ -33,6 +33,36 @@ Constraints:
 """
 from typing import List
 
+
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        return 0
+        if len(prices) < 2:
+            return 0
+        cash = -prices[0]
+        isBuy = True
+        for i in range(1, len(prices)):
+            if prices[i] < prices[i-1]:
+                if isBuy:
+                    cash = cash + prices[i-1] - prices[i]
+                else:
+                    cash = cash - prices[i]
+                    isBuy = True
+            elif prices[i] > prices[i-1]:
+                if isBuy:
+                    cash = cash + prices[i]
+                    isBuy = False
+                else:
+                    cash = cash + prices[i] - prices[i-1]
+        if isBuy:
+            cash += prices[-1]
+        return cash
+		# if isBuy:
+		# 	cash = cash + prices[-1]
+			
+        # return cash
+				
+        # return cash
+prices = [7,6,4,3,1]
+sol = Solution()
+ans = sol.maxProfit(prices)
+print(ans)
