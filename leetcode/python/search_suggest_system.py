@@ -33,13 +33,13 @@ products[i] consists of lowercase English letters.
 1 <= searchWord.length <= 1000
 searchWord consists of lowercase English letters.
 """
-from typing import List, Dict
+from typing import List
 
 
 class TrieNode:
     def __init__(self) -> None:
-        self.children = Dict[str, TrieNode]
-        self.is_end_of_word = False
+        self.children = {}
+        self.suggestions = []
 
 
 class TrieTree:
@@ -51,56 +51,33 @@ class TrieTree:
         for c in word:
             if c not in current.children:
                 current.children[c] = TrieNode()
-            current = current[c]
-        current.is_end_of_word = True
-
-    def search(self, word: str) -> bool:
-        current = self.root
-        for c in word:
-            if c not in current.children:
-                return False
             current = current.children[c]
-        return current.is_end_of_word
+            if len(current.suggestions) < 3:
+                current.suggestions.append(word)
 
-    def startWith(self, prefix: str) -> bool:
-        current = self.root
-        for c in prefix:
-            if c not in current.children:
-                return False
-            current = current.children[c]
-        return True
-
-    def startWithWords(self, prefix: str) -> List[str]:
-        current = self.root
-        for c in prefix:
-            if c not in current.children:
-                return []
-            current = current.children[c]
+    def search(self, word: str) -> List[List[str]]:
         result = []
-        for c in current.children:
-            tmp = c
-            trie = current.children[c]
-            while len(trie.children) > 0:
-                return
-            result.append(prefix + tmp)
-
-    def getWords(self, trie: TrieNode) -> None:
-        return
-
+        node = self.root
+        for char in word:
+            if char in node.children:
+                node = node.children[char]
+                result.append(node.suggestions)
+            else:
+                break
+        result.extend([[]] * (len(word) - len(result)))
+        return result
 
 class Solution:
     def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
+        products.sort()
         trie = TrieTree()
         for pro in products:
             trie.insert(pro)
-        for idx in range(len(searchWord)):
-            word = searchWord[0:idx]
-
-        return []
+        return trie.search(searchWord)
 
 
-products = ["mobile", "mouse", "moneypot", "monitor", "mousepad"]
-searchWord = "mouse"
+products = ["havana"]
+searchWord = "xxxxxx"
 sol = Solution()
 ans = sol.suggestedProducts(products, searchWord)
 print(ans)
