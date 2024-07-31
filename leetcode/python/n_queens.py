@@ -24,6 +24,8 @@ from typing import List
 
 
 class Solution:
+    def backtrack(self, n: int, ans: List[List[str]]) -> None:
+        return
     def solveNQueens(self, n: int) -> List[List[str]]:
         return []
 
