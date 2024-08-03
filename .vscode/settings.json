@@ -2,9 +2,10 @@
   "editor.tabSize": 4,
   "[python]": {
     "editor.defaultFormatter": "ms-python.autopep8",
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false
   },
-  "python.formatting.provider": "none",
+  "python.formatting.provider": "autopep8",
   "files.associations": {
     "algorithm": "cpp",
     "queue": "cpp",
