@@ -34,7 +34,6 @@ class Solution:
         return ans
 
     def backtrack(self, n: int, ans: List[List[str]], tmp: List[str], vds: List[List[bool]], vcs: List[bool], curRow: int) -> None:
-        print(tmp)
         if len(tmp) == n:
             ans.append(tmp.copy())
             return
