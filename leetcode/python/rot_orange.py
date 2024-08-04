@@ -31,11 +31,40 @@ n == grid[i].length
 grid[i][j] is 0, 1, or 2.
 """
 from typing import List
+from collections import deque
+
 
 class Solution:
     def orangesRotting(self, grid: List[List[int]]) -> int:
-        return 0
-    
-grid = [[2,1,1],[1,1,0],[0,1,1]]
-sol = Solution(grid)
-sol.orangesRotting()
+        rows, cols = len(grid), len(grid[0])
+        queue = deque()
+        fresh_oranges = 0
+
+        for i in range(rows):
+            for j in range(cols):
+                if grid[i][j] == 2:
+                    queue.append((i, j))
+                elif grid[i][j] == 1:
+                    fresh_oranges += 1
+        if fresh_oranges == 0:
+            return 0
+
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        minutes_passed = 0
+        while queue:
+            minutes_passed += 1
+            for _ in range(len(queue)):
+                cx, cy = queue.popleft()
+                for (dx, dy) in directions:
+                    nx, ny = cx + dx, cy + dy
+                    if nx >= 0 and nx < rows and ny >=0 and ny < cols and grid[nx][ny] == 1:
+                        grid[nx][ny] = 2
+                        queue.append((nx, ny))
+                        fresh_oranges -= 1
+        return minutes_passed - 1 if fresh_oranges == 0 else -1
+
+
+grid = [[0,2]]
+sol = Solution()
+ans = sol.orangesRotting(grid)
+print(ans)
