@@ -25,14 +25,25 @@ Constraints:
 """
 class Solution:
     def minFlips(self, a: int, b: int, c: int) -> int:
-        aorb = a | b
-        h = aorb ^ c # result is a number whose the number of 1 is the number of different
-        difh = bin(h).count('1') # the number of different bits
-        return bin(h).count('1')
+        abin = bin(a)[2:]
+        bbin = bin(b)[2:]
+        cbin = bin(c)[2:]
+        maxlength = max(len(abin), len(bbin), len(cbin))
+        abin = abin.zfill(maxlength)
+        bbin = bbin.zfill(maxlength)
+        cbin = cbin.zfill(maxlength)
+        count = 0
+        for t in range(maxlength):
+            if cbin[t] == '0':
+                count += (abin[t] == '1') + (bbin[t] == '1')
+            else:
+                if abin[t] == '0' and bbin[t] == '0':
+                    count += 1
+        return count
     
-a = 4
-b = 2
-c = 7
+a = 2
+b = 6
+c = 5
 sol = Solution()
 ans = sol.minFlips(a, b, c)
 print(ans)
