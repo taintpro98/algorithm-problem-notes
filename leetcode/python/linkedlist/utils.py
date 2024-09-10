@@ -1,5 +1,4 @@
 from typing import List, Optional
-import re
 
 
 class ListNode:
@@ -10,7 +9,6 @@ class ListNode:
         # Ghi đè phương thức __lt__ để so sánh các ListNode dựa trên giá trị của chúng
     def __lt__(self, other):
         return self.val < other.val
-
 
 # Hàm tiện ích để chuyển đổi từ mảng thành danh sách liên kết
 def array_to_linked_list(arr: List[int]):
@@ -32,14 +30,3 @@ def linked_list_to_array(node: Optional[ListNode]):
         array.append(node.val)
         node = node.next
     return array
-
-
-def extract_html_tags(html_string: str) -> List[str]:
-    pattern = r"<[^>]+>"
-    tags = re.findall(pattern, html_string)
-    return tags
-
-
-html_string = "<div><p>Hello World!</p><a>Click me</a></div>"
-tags = extract_html_tags(html_string)
-print(tags)

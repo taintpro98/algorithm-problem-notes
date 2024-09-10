@@ -39,7 +39,6 @@ The sum of lists[i].length will not exceed 104.
 """
 # Definition for singly-linked list.
 from typing import List, Optional
-import heapq
 from utility.utils import ListNode, array_to_linked_list, linked_list_to_array
 
 
