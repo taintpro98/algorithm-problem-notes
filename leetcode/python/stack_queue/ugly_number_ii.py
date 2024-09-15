@@ -17,11 +17,32 @@ Constraints:
 
 1 <= n <= 1690
 """
+import heapq
 
 
 class Solution:
     def nthUglyNumber(self, n: int) -> int:
-        return
+        if n == 1:
+            return 1
+        visited = set([1])
+        ugly = []
+        heapq.heappush(ugly, 1)
+        t = 1
+        for _ in range(1, n+1):
+            t = heapq.heappop(ugly)
+            i2 = t * 2
+            i3 = t * 3
+            i5 = t * 5
+            if i2 not in visited:
+                visited.add(i2)
+                heapq.heappush(ugly, i2)
+            if i3 not in visited:
+                visited.add(i3)
+                heapq.heappush(ugly, i3)
+            if i5 not in visited:
+                visited.add(i5)
+                heapq.heappush(ugly, i5)
+        return t
 
 
 n = 10
