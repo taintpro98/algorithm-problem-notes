@@ -27,29 +27,45 @@ startGene.length == endGene.length == bank[i].length == 8
 startGene, endGene, and bank[i] consist of only the characters ['A', 'C', 'G', 'T'].
 """
 from typing import List
-from collections import deque
+from collections import deque, defaultdict
 
 class Solution:
+    def isAdj(self, gen1: str, gen2: str) -> bool:
+        if len(gen1) != len(gen2):
+            return False
+        count = 0
+        for a, b in zip(gen1, gen2):
+            if a != b:
+                count += 1
+            if count > 1:
+                return False
+        return count == 1
+    
     def minMutation(self, startGene: str, endGene: str, bank: List[str]) -> int:
-        bank_set = set(bank)
+        graph = defaultdict(list)
+        for b in bank:
+            if self.isAdj(startGene, b):
+                graph[startGene].append(b)
+                graph[b].append(startGene)
+        for i in range(len(bank) - 1):
+            for j in range(i+1, len(bank)):
+                if self.isAdj(bank[j], bank[i]):
+                    graph[bank[i]].append(bank[j])
+                    graph[bank[j]].append(bank[i])
+
         visited = set()
         queue = deque([(startGene, 0)])
+        visited.add(startGene)
+
         while queue:
             node = queue.popleft()
-            print(node)
             if node[0] == endGene:
                 return node[1]
-            if node[0] not in visited:
-                visited.add(node[0])
-                for idx, (s, e) in enumerate(zip(node[0], endGene)):
-    	            if s != e:
-                        tmp = node[0][:idx] + e + node[0][idx + 1:]
-                        print("idx", idx)
-                        print("tmp", tmp)
-                        if tmp in bank_set:
-                            queue.append((tmp, node[1] + 1))
+            for next in graph[node[0]]:
+                if next not in visited:
+                    visited.add(next)
+                    queue.append((next, node[1] + 1))
         return -1
-        
     
 startGene = "AACCGGTT"
 endGene = "AAACGGTA"
@@ -57,3 +73,11 @@ bank = ["AACCGATT","AACCGATA","AAACGATA","AAACGGTA"]
 sol = Solution()
 ans = sol.minMutation(startGene, endGene, bank)
 print(ans)
+
+"""
+AACCGGTT -> 
+AACCGATT
+AACCGATA
+AAACGATA
+AAACGGTA
+"""
