@@ -37,17 +37,31 @@ obstacles.length == n + 1
 0 <= obstacles[i] <= 3
 obstacles[0] == obstacles[n] == 0
 """
+# https://jimmy-shen.medium.com/solve-a-problem-by-using-o-n-dijkstra-or-dp-9312f6a6beb6
 from typing import List
 from collections import deque
 
+
 class Solution:
     def minSideJumps(self, obstacles: List[int]) -> int:
-        queue = deque([(0,2,0)])
+        queue = deque([(0, 2, 0)])
+        visited = set([(0, 2)])
         while queue:
-            pos, len, jumps = queue.popleft()
-            
+            pos, lent, jumps = queue.popleft()
+            if pos == len(obstacles) - 1:
+                return jumps
 
-obstacles = [0,1,2,3,0]
+            if obstacles[pos+1] != lent and (pos + 1, lent) not in visited:
+                queue.append((pos+1, lent, jumps))
+                visited.add((pos+1, lent))
+            for new_lane in range(1, 4):
+                if new_lane != lent and obstacles[pos] != new_lane and (pos, new_lane) not in visited:
+                    queue.append((pos, new_lane, jumps + 1))
+                    visited.add((pos, new_lane))
+        return -1
+
+
+obstacles = [0, 2, 1, 0, 3, 0]
 sol = Solution()
 ans = sol.minSideJumps(obstacles)
 print(ans)
