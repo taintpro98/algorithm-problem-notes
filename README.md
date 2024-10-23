@@ -19,3 +19,4 @@ func main() {
 }
 ```
 - [Concurrent Programming in Go – Goroutines, Channels, and More Explained with Examples](https://www.freecodecamp.org/news/concurrent-programming-in-go/)
+- [Go sync.Cond, the Most Overlooked Sync Mechanism](https://victoriametrics.com/blog/go-sync-cond)
