@@ -34,4 +34,14 @@ from typing import List
 
 class Solution:
     def scheduleCourse(self, courses: List[List[int]]) -> int:
-        return
+        courses.sort(key=lambda x: x[0])
+        curTimes = []
+        dp = []
+        for idx, c in enumerate(courses):
+            pass
+        
+    
+courses = [[100,200],[200,1300],[1000,1250],[2000,3200]]
+sol = Solution()
+ans = sol.scheduleCourse(courses)
+print(ans)
