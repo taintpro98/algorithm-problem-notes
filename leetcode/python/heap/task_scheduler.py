@@ -40,29 +40,31 @@ tasks[i] is an uppercase English letter.
 """
 from typing import List
 from collections import defaultdict
-# import heapq
+import heapq
 
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
         count = defaultdict(int)
         for t in tasks:
             count[t] += 1
-        # heap = []
-        # for c in count:
-        #     heapq.heappush(heap, (-count[c], c))
-        rows = []
-        while len(count) > 0:
-            rows.append(len(count))
-            for c in count:
-                count[c] -= 1
-            zero_keys = [k for k, v in count.items() if v == 0]
-            for z in zero_keys:
-                del count[z]
-        ans = len(tasks)
-        for t in range(len(rows) - 1):
-            if rows[t]-1 < n:
-                ans += (n-rows[t]+1)
+        heap = [-c for c in count.values()]
+        heapq.heapify(heap)
+        ans = 0
+        num_tasks = len(tasks)
+        while heap:
+            tmp = []
+            for _ in range(n+1):
+                if heap:
+                    tmp.append(heapq.heappop(heap) + 1)
+                    num_tasks -= 1
+                ans += 1
+                if num_tasks <= 0:
+                    break
+            for item in tmp:
+                if item < 0:
+                    heapq.heappush(heap, item)
         return ans
+                    
     
 tasks = ["B","C","D","A","A","A","A","G"]
 n = 1
