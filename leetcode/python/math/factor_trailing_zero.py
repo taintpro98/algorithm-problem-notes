@@ -24,9 +24,13 @@ Constraints:
 """
 class Solution:
     def trailingZeroes(self, n: int) -> int:
-        return
+        ans = 0
+        while n:
+            n //= 5
+            ans += n
+        return ans
     
-n = 10
+n = 50
 sol = Solution()
 ans = sol.trailingZeroes(n)
 print(ans)
