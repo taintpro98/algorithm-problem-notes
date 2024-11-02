@@ -1,6 +1,6 @@
 # https://leetcode.com/problems/course-schedule-iii
 """
-There are n different online courses numbered from 1 to n. You are given an array courses where courses[i] = [durationi, lastDayi] indicate that the ith course should be taken continuously for durationi days and must be finished before or on lastDayi.
+There are n different online courses numbered from 1 to n. You are given an array courses where courses[i] = [durationi, lastDayi] indicate that the ith course should be taken continuously for duration i days and must be finished before or on lastDayi.
 
 You will start on the 1st day and you cannot take two or more courses simultaneously.
 
@@ -30,18 +30,37 @@ Constraints:
 1 <= courses.length <= 104
 1 <= durationi, lastDayi <= 104
 """
-from typing import List
 
+"""
+sort courses in non-decreasing order of their expiration dates 
+dp[i] = max(sigma dp[x], 0) + 1 (x < i)
+need to verify 
+end + course[0] <= course[1]
+
+O(nlgn)
+"""
+
+
+
+
+from typing import List
+import heapq
 class Solution:
     def scheduleCourse(self, courses: List[List[int]]) -> int:
-        courses.sort(key=lambda x: x[0])
-        curTimes = []
-        dp = []
-        for idx, c in enumerate(courses):
-            pass
-        
-    
-courses = [[100,200],[200,1300],[1000,1250],[2000,3200]]
+        courses.sort(key=lambda x: x[1])
+        heap = []
+        total = 0
+        for c in courses:
+            total += c[0]
+            heapq.heappush(heap, -c[0])
+            if total > c[1]:
+                total += heapq.heappop(heap)
+        return len(heap)
+
+courses = [[7, 17], [3, 12], [10, 20], [9, 10], [5, 20], [10, 19], [4, 18]]
 sol = Solution()
 ans = sol.scheduleCourse(courses)
 print(ans)
+"""
+
+"""
