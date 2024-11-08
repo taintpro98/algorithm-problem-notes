@@ -47,32 +47,27 @@ from typing import List
 import heapq
 
 class Solution:
-    def compare(self, a: List[int]) -> bool:
-        return tuple(a[1:])
-     
     def getOrder(self, tasks: List[List[int]]) -> List[int]:
         for idx, t in enumerate(tasks):
             t.append(idx)
         tasks.sort(key=lambda x: x)
         heap = []
         ans = []
-        curTask = []
-        for task in tasks:
-            heapq.heappush(heap, (self.compare(task), task))
-            t = task[0]
-            if len(curTask) == 0 or t - curTask[0] >= curTask[1]:
-                if len(curTask) > 0:
-                    ans.append(curTask[2])
-                    curTask = []
-                if heap:
-                    _, curTask = heapq.heappop(heap)
-        if len(curTask) > 0:
-            ans.append(curTask[2])
-        while heap:
-            ans.append(heapq.heappop(heap)[1][2])
+        i = 0
+        time = 0
+        while len(ans) < len(tasks):
+            while i < len(tasks) and tasks[i][0] <= time:
+                heapq.heappush(heap, (tasks[i][1], tasks[i][2]))
+                i += 1
+            if heap:
+                processingTime, index = heapq.heappop(heap)
+                time += processingTime
+                ans.append(index)
+            else:
+                time = tasks[i][0]
         return ans
             
-tasks = [[35,36],[11,7],[15,47],[34,2],[47,19],[16,14],[19,8],[7,34],[38,15],[16,18],[27,22],[7,15],[43,2],[10,5],[5,4],[3,11]]
+tasks = [[1,2],[2,4],[3,2],[4,1]]
 # [15,14,13,1,6,3,5,12,8,11,9,4,10,7,0,2]
 sol = Solution()
 ans = sol.getOrder(tasks)
