@@ -27,10 +27,30 @@ n == matrix[i].length
 from typing import List
 
 class Solution:
-    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
-        return
+    def inbound(self, x: int, size: int) -> bool:
+        return x >= 0 and x < size
+        
+    def dfs(self, matrix: List[List[int]], cache: List[List[int]], x: int, y: int) -> int:
+        if cache[x][y] != 0:
+            return cache[x][y]
+        for pathX, pathY in self.paths:
+            newX = x + pathX
+            newY = y + pathY
+            if self.inbound(newX, len(matrix)) and self.inbound(newY, len(matrix[0])) and matrix[x][y] < matrix[newX][newY]:
+                cache[x][y] = max(cache[x][y], self.dfs(matrix, cache, newX, newY))
+        cache[x][y] += 1
+        return cache[x][y]
     
-matrix = [[9,9,4],[6,6,8],[2,1,1]]
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        cache = [[0] * len(matrix[0]) for _ in range(len(matrix))]
+        self.paths = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+        ans = 1
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                ans = max(ans, self.dfs(matrix, cache, i, j))
+        return ans
+    
+matrix = [[1]]
 sol = Solution()
 ans = sol.longestIncreasingPath(matrix)
 print(ans)
