@@ -24,29 +24,57 @@ ai != bi
 There are no repeated edges.
 The given graph is connected.
 """
-from typing import List, Dict
+from typing import List
 from collections import defaultdict
 
 class Solution:
-    def dfs(self, graph: defaultdict, visited: set, parent: Dict[int, int], u: int) -> None:
-        for v in graph[u]:
-            if v not in visited:
-                visited.add(v)
-                parent[v] = u
-                self.dfs(graph, visited, parent, v)
-            
-                
+    def dfs(self, graph: defaultdict, visited: set, cycle: List[int], parent: int, node: int) -> bool:
+        visited.add(node)
+        cycle.append(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                if self.dfs(graph, visited, cycle, node, neighbor):
+                    return True
+            elif neighbor != parent:
+                cycle.append(neighbor)
+                return True
+        cycle.pop()
+        return False
+    
+    def isValid(self, u: int, v: int, cycleSet: set) -> bool:
+        return str(u) + "_" + str(v) in cycleSet or str(v) + "_" + str(u) in cycleSet
+    
+    def normalize(self, cycle: List[int]) -> List[int]:
+        i = 0
+        while cycle[i] != cycle[-1]:
+            i += 1
+        return cycle[i:]
     
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
         graph = defaultdict(list)
+        n = 1
         for u, v in edges:
+            n = max(n, u, v)
             graph[u].append(v)
             graph[v].append(u)
         visited = set()
-        parent = {}
-        
+        cycle = []
+        for i in range(1, n+1):
+            if i not in visited:
+                if self.dfs(graph, visited, cycle, -1, i):
+                    break
+        cycle = self.normalize(cycle)
+        cycleSet = set()
+        for i in range(len(cycle) - 1):
+            cycleSet.add(str(cycle[i]) + "_" +  str(cycle[i+1]))
+        cycleSet.add(str(cycle[0]) + "_" + str(cycle[len(cycle)-1]))
+        for i in range(len(edges) - 1, -1, -1):
+            u, v = edges[i]
+            if self.isValid(u, v, cycleSet):
+                return edges[i]
+        return []
     
-edges = [[1,2],[1,3],[2,3]]
+edges = [[20,24],[3,17],[17,20],[8,15],[14,17],[6,17],[15,23],[6,8],[15,19],[16,22],[7,9],[8,22],[2,4],[4,11],[22,25],[6,24],[13,19],[15,18],[1,9],[4,9],[4,19],[5,10],[4,21],[4,12],[5,6]]
 sol = Solution()
 ans = sol.findRedundantConnection(edges)
 print(ans)
