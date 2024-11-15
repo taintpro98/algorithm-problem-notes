@@ -72,13 +72,27 @@ class Solution:
     def findRedundantDirectedConnection(self, edges: List[List[int]]) -> List[int]:
         graph = defaultdict(list)
         n = 1
+        adjacency_set = set()
         for u, v in edges:
             n = max(n, u, v)
             graph[u].append(v)
             graph[v].append(u)
+            adjacency_set.add((u, v))
         in_degree = [0] * (n + 1)
         for u, v in edges:
             in_degree[v] += 1
+            
+        for u, v in edges:
+            if (v, u) in adjacency_set:
+                if in_degree[u] > in_degree[v]:
+                    return [v, u]
+                elif in_degree[u] < in_degree[v]:
+                    return [u, v]
+                else:
+                    for i in range(len(edges) - 1, -1, -1):
+                        x, y = edges[i]
+                        if (x == u and y == v) or (x == v and y == u):
+                            return [x, y]
             
         visited = set()
         cycle = []
@@ -88,7 +102,6 @@ class Solution:
                     break
         
         cycle = self.normalize(cycle)
-        print(cycle)
         maxInDegree = 0
         for c in cycle:
             maxInDegree = max(maxInDegree, in_degree[c])
@@ -102,8 +115,8 @@ class Solution:
                 return edges[i]
         return []
         
-# edges = [[4,2],[1,5],[5,2],[5,3],[2,4]]
-edges = [[1,2],[2,3],[3,4],[4,1],[1,5]]
+edges = [[1,2],[2,1],[2,3],[3,4]]
+# edges = [[1,2],[2,3],[3,4],[4,1],[1,5]]
 sol = Solution()
 ans = sol.findRedundantDirectedConnection(edges)
 print(ans)
