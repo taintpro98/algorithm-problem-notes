@@ -30,40 +30,93 @@ from typing import List
 from collections import defaultdict
 
 class Solution:
-    def dfs(self, graph: defaultdict, rec_stack: set, visited: set, cycle: List[int], node: int) -> bool:
-        visited.add(node)
-        rec_stack.add(node)
-        cycle.append(node)
+    # def DFS(self, graph: defaultdict, rec_stack: set, visited: set, cycle: List[int], node: int) -> bool:
+    #     visited.add(node)
+    #     rec_stack.add(node)
+    #     cycle.append(node)
         
+    #     for neighbor in graph[node]:
+    #         if neighbor not in visited:
+    #             if self.DFS(graph, rec_stack, visited, cycle, neighbor):
+    #                 return True
+    #         elif neighbor in rec_stack:
+    #             cycle.append(neighbor)
+    #             return True
+        
+    #     rec_stack.remove(node)
+    #     cycle.pop()
+    #     return False
+    
+    def dfs(self, graph: defaultdict, visited: set, cycle: List[int], parent: int, node: int) -> bool:
+        visited.add(node)
+        cycle.append(node)
         for neighbor in graph[node]:
             if neighbor not in visited:
-                if self.dfs(graph, rec_stack, visited, cycle, neighbor):
+                if self.dfs(graph, visited, cycle, node, neighbor):
                     return True
-            elif neighbor in rec_stack:
+            elif neighbor != parent:
                 cycle.append(neighbor)
                 return True
-        
-        rec_stack.remove(node)
         cycle.pop()
         return False
+    
+    def normalize(self, cycle: List[int]) -> List[int]:
+        i = 0
+        while cycle[i] != cycle[-1]:
+            i += 1
+        return cycle[i:]
+    
+    def isValid(self, u: int, v: int, cycleSet: set, inDegree: List[int], maxInDegree: int) -> bool:
+        return (str(u) + "_" + str(v) in cycleSet or str(v) + "_" + str(u) in cycleSet) and inDegree[v] == maxInDegree
     
     def findRedundantDirectedConnection(self, edges: List[List[int]]) -> List[int]:
         graph = defaultdict(list)
         n = 1
+        adjacency_set = set()
         for u, v in edges:
             n = max(n, u, v)
             graph[u].append(v)
-        print(graph)
+            graph[v].append(u)
+            adjacency_set.add((u, v))
+        in_degree = [0] * (n + 1)
+        for u, v in edges:
+            in_degree[v] += 1
+            
+        for u, v in edges:
+            if (v, u) in adjacency_set:
+                if in_degree[u] > in_degree[v]:
+                    return [v, u]
+                elif in_degree[u] < in_degree[v]:
+                    return [u, v]
+                else:
+                    for i in range(len(edges) - 1, -1, -1):
+                        x, y = edges[i]
+                        if (x == u and y == v) or (x == v and y == u):
+                            return [x, y]
+            
         visited = set()
-        rec_stack = set()
         cycle = []
         for i in range(1, n+1):
             if i not in visited:
-                if self.dfs(graph, rec_stack, visited, cycle, i):
+                if self.dfs(graph, visited, cycle, -1, i):
                     break
-        print(cycle)
         
-edges = [[1,2],[1,3],[2,3]]
+        cycle = self.normalize(cycle)
+        maxInDegree = 0
+        for c in cycle:
+            maxInDegree = max(maxInDegree, in_degree[c])
+        cycleSet = set()
+        for i in range(len(cycle) - 1):
+            cycleSet.add(str(cycle[i]) + "_" +  str(cycle[i+1]))
+        cycleSet.add(str(cycle[0]) + "_" + str(cycle[len(cycle)-1]))
+        for i in range(len(edges) - 1, -1, -1):
+            u, v = edges[i]
+            if self.isValid(u, v, cycleSet, in_degree, maxInDegree):
+                return edges[i]
+        return []
+        
+edges = [[1,2],[2,1],[2,3],[3,4]]
+# edges = [[1,2],[2,3],[3,4],[4,1],[1,5]]
 sol = Solution()
 ans = sol.findRedundantDirectedConnection(edges)
 print(ans)
