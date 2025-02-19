@@ -21,3 +21,4 @@ func main() {
 - [Concurrent Programming in Go – Goroutines, Channels, and More Explained with Examples](https://www.freecodecamp.org/news/concurrent-programming-in-go/)
 - [Go sync.Cond, the Most Overlooked Sync Mechanism](https://victoriametrics.com/blog/go-sync-cond)
 - [Go Concurrency, Why Not?](https://medium.com/@stev3npy/go-concurrency-why-not-1b3b60a47634)
+- [Learning Go in 2024; From Beginner to Senior](https://www.bytesizego.com/blog/learning-golang-2024)
