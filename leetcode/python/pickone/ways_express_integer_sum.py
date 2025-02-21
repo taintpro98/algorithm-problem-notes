@@ -48,22 +48,20 @@ class Solution:
         dp = [[0] * (k + 1) for _ in range (n+1)] # dp[i][j] means the result of the sum i with the max element j
         for i in range(n + 1):
             for j in range(1, k+1):
-                if j == 1:
-                    if i == 1:
-                        dp[i][j] = 1
-                    else:
-                        dp[i][j] = 0
-                else:
-                    dp[i][j] = dp[i][j-1]
-                    if self.power[j] <= i:
-                        dp[i][j] += dp[i-self.power[j]][j-1]
-                    dp[i][j] %= MOD
-        print(dp)
+                if i == 1:
+                    dp[i][j] = 1
+                    continue
+                dp[i][j] = dp[i][j-1]
+                if self.power[j] == i:
+                    dp[i][j] += 1
+                elif self.power[j] < i:
+                    dp[i][j] += dp[i-self.power[j]][j-1]
+                dp[i][j] %= MOD
         return dp[n][k]
         
         
-n = 4
-x = 1
+n = 10
+x = 2
 sol = Solution()
 ans = sol.numberOfWays(n, x)
 print(ans)
@@ -71,4 +69,30 @@ print(ans)
 dp[10][2] = 1
 dp[0][1] = 0
 dp[0][2] = 0
+dp[4][4] = 1 + dp[4][3]
+dp[4][3] = dp[4][2] + dp[1][2]
+dp[1][2] = dp[1][1] = 1
+"""
+
+# 1DP array solution 
+"""
+class Solution:
+    def numberOfWays(self, n: int, x: int) -> int:
+        MOD = 10**9 + 7
+        power = []
+        
+        # Precompute powers
+        i = 1
+        while i**x <= n:
+            power.append(i**x)
+            i += 1
+
+        dp = [0] * (n + 1)
+        dp[0] = 1  # There's one way to sum up to 0 (using nothing)
+        
+        # Fill DP table
+        for p in power:
+            for i in range(n, p - 1, -1):  # Traverse in reverse to avoid reusing elements
+                dp[i] = (dp[i] + dp[i - p]) % MOD
+        return dp[n]
 """
