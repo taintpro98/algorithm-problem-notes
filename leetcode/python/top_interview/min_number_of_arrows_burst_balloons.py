@@ -35,11 +35,18 @@ points[i].length == 2
 """
 from typing import List
 
-class Solution:
-    def findMinArrowShots(self, points: List[List[int]]) -> int:
-        pass
+class Solution:    
+	def findMinArrowShots(self, points: List[List[int]]) -> int:
+		points.sort(key=lambda x: x[1])
+		arr_pos = points[0][1]
+		arrows = 1
+		for start, end in points[1:]:
+			if start > arr_pos:
+				arrows += 1
+				arr_pos = end
+		return arrows
     
-points = [[10,16],[2,8],[1,6],[7,12]]
+points = [[1,2],[3,4],[5,6],[7,8]]
 sol = Solution()
 ans = sol.findMinArrowShots(points)
 print(ans)
