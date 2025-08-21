@@ -31,13 +31,23 @@ from typing import Optional
 
 class Solution:
     def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
-        dummy = ListNode(-1)
-        dummy.next = head
-        prev = dummy
+        dummy = ListNode(0, head)
+        start = end = bstart = bend = dummy
         for _ in range(left - 1):
-            prev = prev.next
-        cur = prev.next
-        nextNode = None
+            bstart = bstart.next
+        start = bstart.next
+        for _ in range(right):
+            end = end.next
+        bend = end.next
+        bstart.next = end
+        prev = bend
+        cur = start
+        for _ in range(left, right + 1):
+            tmp = cur.next
+            cur.next = prev
+            prev = cur
+            cur = tmp
+        return dummy.next
     
 head = [1,2,3,4,5]
 left = 2
