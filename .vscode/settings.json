@@ -1,12 +1,11 @@
 {
-  "editor.insertSpaces": false,
-  "editor.detectIndentation": false,
+  "editor.insertSpaces": false, 
   "editor.tabSize": 4,
   "[python]": {
-    "editor.defaultFormatter": "ms-python.autopep8",
-    "editor.tabSize": 4,
-    "editor.insertSpaces": false
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4
   },
+  "editor.detectIndentation": false,
   "files.associations": {
     "algorithm": "cpp",
     "queue": "cpp",
