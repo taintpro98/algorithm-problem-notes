@@ -27,8 +27,16 @@ from typing import List
 
 
 class Solution:
-    def maxCoins(self, nums: List[int]) -> int:
-        return
+	def maxCoins(self, nums: List[int]) -> int:
+		A = [1] + nums + [1]
+		n = len(A)
+		dp = [n * [0] for _ in range(n)]
+		for length in range(n-1):
+			for l in range(n-length-1):
+				r = length + l + 1
+				for k in range(l+1, r):
+					dp[l][r] = max(dp[l][r], A[k] * A[l] * A[r] + dp[l][k] + dp[k][r])
+		return dp[0][n-1]
 
 
 nums = [3, 1, 5, 8]
